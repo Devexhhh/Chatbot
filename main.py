@@ -1,6 +1,6 @@
 from chatbot.rule_based import chatbot_reply
 
-print("🤖 Chatbot is running! Type 'bye' to exit.\n")
+print("Chatbot is running! Type 'bye' to exit.\n")
 
 while True:
     user_input = input("You: ")
