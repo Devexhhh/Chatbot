@@ -1,5 +1,3 @@
-# chatbot/nlp_engine.py
-
 import nltk
 import string
 from nltk.corpus import stopwords

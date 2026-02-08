@@ -1,5 +1,3 @@
-# chatbot/rule_based.py
-
 import random
 from chatbot.responses import RESPONSES
 from chatbot.nlp_engine import preprocess

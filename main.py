@@ -1,5 +1,3 @@
-# main.py
-
 from chatbot.rule_based import chatbot_reply
 
 print("🤖 Chatbot is running! Type 'bye' to exit.\n")

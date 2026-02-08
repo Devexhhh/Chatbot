@@ -1,5 +1,3 @@
-# chatbot/responses.py
-
 RESPONSES = {
     "greeting": [
         "Hey! 👋 How can I help you?",
