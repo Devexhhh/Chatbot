@@ -46,11 +46,10 @@ def predict(text: str):
 
     probs = model.predict_proba(X)[0]
     max_prob = max(probs)
+    intent = model.classes_[probs.argmax()]
 
-    if max_prob < 0.4:
-        return "unknown"
+    return intent, max_prob
 
-    return model.predict(X)[0]
 
 def get_response(intent: str):
     intents = load_data()
