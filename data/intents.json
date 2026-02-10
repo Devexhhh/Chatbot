@@ -53,6 +53,20 @@
                 "Sure! How can I help you?",
                 "I'm here to help 😊"
             ]
+        },
+        {
+            "tag": "smalltalk",
+            "patterns": [
+                "how are you",
+                "what's up",
+                "are you real",
+                "who made you"
+            ],
+            "responses": [
+                "I'm doing great 😄 How about you?",
+                "I'm just code, but I'm happy to talk!",
+                "I was built by Devex 🚀"
+            ]
         }
     ]
 }
