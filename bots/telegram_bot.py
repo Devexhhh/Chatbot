@@ -16,20 +16,35 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_text = update.message.text
     user_id = str(update.message.from_user.id)
 
-    async with httpx.AsyncClient(timeout=10.0) as client:
-        response = await client.post(
-            API_URL,
-            json={
-                "message": user_text,
-                "user_id": user_id
-            }
-        )
+    try:
+        async with httpx.AsyncClient(timeout=15.0) as client:
+            response = await client.post(
+                API_URL,
+                json={
+                    "message": user_text,
+                    "user_id": user_id
+                }
+            )
+        reply = response.json()["response"]
 
-    await update.message.reply_text(response.json()["response"])
+    except Exception as e:
+        reply = "⚠️ I'm having trouble responding right now. Please try again."
+
+    await update.message.reply_text(reply)
 
 def main():
-    app = ApplicationBuilder().token(BOT_TOKEN).build()
-    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
+    app = (
+        ApplicationBuilder()
+        .token(BOT_TOKEN)
+        .connect_timeout(20.0)   # 🔥 important
+        .read_timeout(20.0)      # 🔥 important
+        .build()
+    )
+
+    app.add_handler(
+        MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message)
+    )
+
     app.run_polling()
 
 if __name__ == "__main__":
