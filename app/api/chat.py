@@ -3,6 +3,7 @@ from pydantic import BaseModel
 
 from chatbot.ml_model import predict, get_response
 from app.memory import get_memory, update_memory
+from chatbot.skill_router import handle_skills
 
 router = APIRouter()
 
