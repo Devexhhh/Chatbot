@@ -36,8 +36,8 @@ def main():
     app = (
         ApplicationBuilder()
         .token(BOT_TOKEN)
-        .connect_timeout(20.0)   # 🔥 important
-        .read_timeout(20.0)      # 🔥 important
+        .connect_timeout(20.0)
+        .read_timeout(20.0)
         .build()
     )
 
