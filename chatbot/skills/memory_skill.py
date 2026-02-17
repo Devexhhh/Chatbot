@@ -3,12 +3,22 @@ from app.memory.interface import get_memory, update_memory
 
 
 def can_handle(text: str) -> bool:
-    text = text.lower()
-    return (
-        text.startswith("remember")
-        or text.startswith("what is my")
-        or text.startswith("who am i")
-    )
+
+    text_lower = text.lower()
+
+    triggers = [
+        "remember",
+        "what is my",
+        "who am i",
+        "what do you know about me",
+        "do you know about me",
+        "which language do i like",
+        "what language do i like",
+        "favorite language",
+    ]
+
+    return any(trigger in text_lower for trigger in triggers)
+
 
 
 async def handle(text: str, user_id: str) -> str:
@@ -54,17 +64,42 @@ async def handle(text: str, user_id: str) -> str:
             return f"You are {memory['name']}."
 
         return "I don't know your name yet."
-
-    if text_lower == "what do you know about me":
+    
+    # LIST ALL MEMORY
+    if "what do you know about me" in text_lower:
 
         memory = get_memory(user_id)
 
         if not memory:
             return "I don't know anything about you yet."
 
-        facts = "\n".join(f"{k}: {v}" for k, v in memory.items())
+        facts = []
 
-        return f"Here is what I know about you:\n{facts}"
+        for key, value in memory.items():
+            facts.append(f"Your {key} is {value}")
 
+        return ". ".join(facts) + "."
+
+
+    # FLEXIBLE LANGUAGE RECALL
+    if "language" in text_lower and ("like" in text_lower or "favorite" in text_lower):
+
+        memory = get_memory(user_id)
+
+        if "favorite language" in memory:
+            return f"Your favorite language is {memory['favorite language']}."
+
+
+    # STANDARD RECALL
+    if text_lower.startswith("what is my"):
+
+        key = text_lower.replace("what is my", "").strip()
+
+        memory = get_memory(user_id)
+
+        if key in memory:
+            return f"Your {key} is {memory[key]}."
+
+        return f"I don't know your {key} yet."
 
     return None
