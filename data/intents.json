@@ -45,13 +45,14 @@
         {
             "tag": "help",
             "patterns": [
-                "Help me",
-                "Can you help?",
-                "I need support"
+                "help",
+                "help me",
+                "i need help",
+                "assist me"
             ],
             "responses": [
-                "Sure! How can I help you?",
-                "I'm here to help 😊"
+                "Sure, I can help. What do you need?",
+                "I'm here to assist you."
             ]
         },
         {
