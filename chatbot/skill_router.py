@@ -3,10 +3,14 @@ import inspect
 from chatbot.skills.math_skill import can_handle as can_math, solve as solve_math
 from chatbot.skills.time_skill import can_handle as can_time, handle as handle_time
 from chatbot.skills.weather_skill import can_handle as can_weather, handle as handle_weather
+from chatbot.skills.memory_skill import can_handle as can_memory, handle as handle_memory
 
 
-async def handle_skills(text: str):
+async def handle_skills(text: str,  user_id: str):
 
+    if can_memory(text):
+        return await handle_memory(text, user_id)
+    
     if can_math(text):
         return solve_math(text)
 
