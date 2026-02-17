@@ -28,7 +28,9 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         reply = response.json()["response"]
 
     except Exception as e:
-        reply = "⚠️ I'm having trouble responding right now. Please try again."
+        print("ERROR:", e)
+        reply = f"Error: {str(e)}"
+
 
     await update.message.reply_text(reply)
 
