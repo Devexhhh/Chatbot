@@ -15,19 +15,26 @@ class ChatResponse(BaseModel):
     response: str
 
 @router.post("/chat", response_model=ChatResponse)
-def chat(req: ChatRequest):
-    # 1️⃣ Try skill-based handlers first (math, time, etc.)
-    skill_response = handle_skills(req.message)
+async def chat(req: ChatRequest):
+
+    # 1. Skills first
+    skill_response = await handle_skills(req.message)
     if skill_response:
         return {"response": skill_response}
 
-    # 2️⃣ Load user memory
+    # 2. Load memory
     memory = get_memory(req.user_id)
 
-    # 3️⃣ ML intent detection
+    # 3. Predict intent
     intent, confidence = predict(req.message)
 
-    # 4️⃣ Low-confidence handling with memory
+    # 4. Save intent even if medium confidence
+    if confidence >= 0.30:
+        update_memory(req.user_id, {
+            "last_intent": intent
+        })
+
+    # 5. Handle low confidence using memory
     if confidence < 0.45:
         if "last_intent" in memory:
             return {
@@ -36,12 +43,8 @@ def chat(req: ChatRequest):
 
         return {"response": "I'm not sure I understood 🤔 Can you rephrase?"}
 
-    # 5️⃣ Update memory
-    update_memory(req.user_id, {
-        "last_intent": intent
-    })
-
-    # 6️⃣ Normal response
+    # 6. Normal response
     reply = get_response(intent)
     return {"response": reply}
+
 
