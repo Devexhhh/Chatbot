@@ -2,7 +2,7 @@ from fastapi import APIRouter
 from pydantic import BaseModel
 
 from chatbot.ml_model import predict, get_response
-from app.memory import get_memory, update_memory
+from app.memory.interface import get_memory, update_memory
 from chatbot.skill_router import handle_skills
 
 router = APIRouter()
@@ -18,7 +18,7 @@ class ChatResponse(BaseModel):
 async def chat(req: ChatRequest):
 
     # 1. Skills first
-    skill_response = await handle_skills(req.message)
+    skill_response = await handle_skills(req.message, req.user_id)
     if skill_response:
         return {"response": skill_response}
 
